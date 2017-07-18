@@ -76,7 +76,7 @@ let commandName: string = args.shift() || 'install';
 // if -v is the first command, then always exit after returning the version
 if (commandName === '-v') {
   console.log(version.trim());
-  process.exit(0);
+  process.exitCode = 0;
 }
 
 if (commandName === '--help' || commandName === '-h') {
@@ -142,7 +142,7 @@ if (outputWrapper) {
 if (command.noArguments && commander.args.length) {
   reporter.error(reporter.lang('noArguments'));
   reporter.info(command.getDocsInfo);
-  process.exit(1);
+  process.exitCode = 1;
 }
 
 //
@@ -158,7 +158,7 @@ if (!commander.offline && network.isOffline()) {
 //
 if (command.requireLockfile && !fs.existsSync(path.join(config.cwd, constants.LOCKFILE_FILENAME))) {
   reporter.error(reporter.lang('noRequiredLockfile'));
-  process.exit(1);
+  process.exitCode = 1;
 }
 
 //
@@ -187,7 +187,7 @@ const runEventuallyWithFile = (mutexFilename: ?string, isFirstTime?: boolean): P
         }, 200); // do not starve the CPU
       } else {
         onDeath(() => {
-          process.exit(1);
+          process.exitCode = 1;
         });
         ok(run().then(release));
       }
@@ -327,7 +327,7 @@ config
     }
 
     const exit = exitCode => {
-      process.exit(exitCode || 0);
+      process.exitCode = exitCode || 0;
     };
     // verbose logs outputs process.uptime() with this line we can sync uptime to absolute time on the computer
     reporter.verbose(`current time: ${new Date().toISOString()}`);

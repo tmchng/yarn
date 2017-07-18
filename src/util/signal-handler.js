@@ -3,7 +3,7 @@ import {forwardSignalToSpawnedProcesses} from './child.js';
 
 function forwardSignalAndExit(signal: string) {
   forwardSignalToSpawnedProcesses(signal);
-  process.exit(1);
+  throw new Error('Received SIGTERM, terminating.');
 }
 
 export default function handleSignals() {
